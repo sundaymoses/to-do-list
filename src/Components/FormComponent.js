@@ -36,24 +36,22 @@ padding:theme.spacing(2)
   },
   noTask:{
     textAlign:"center",
-    color:"grey"
-  }
+    color:"grey",
+  },
 
 }))
 const FormComponent = () => {
   //include the usestates to capture the entered data 
   const [inputData, setInputData]=useState("");
   const[error, setError]=useState("");
-  const[remainingItems, setRemainingItems]=useState([
-  
- 
-]);
+  const[remainingItems, setRemainingItems]=useState([]);
+  const[completedTasks, setCompletedTask]=useState([]);
 //function to handle submit
   const handleSubmit=(e)=>{
 e.preventDefault();
 console.log("submitted");
 //send the info to the secondColumn Grid
-if(inputData.length >= 5 && inputData!==" "){
+if(inputData.length >= 4 && inputData!==" "){
   const initial={
     id:Math.random(),
     title: inputData
@@ -75,8 +73,17 @@ if(inputData.length >= 5 && inputData!==" "){
     setInputData(target.value);
   }
   //handling the marked event
-  const handleCheckDone=()=>{
+  const handleCheckDone=(id)=>{
     console.log("i was clicked!");
+    const initialDone=[...remainingItems]
+    const initialCompleted=[...completedTasks]
+    const theOne=initialDone.find((item)=>item.id===id)
+    initialCompleted.push(theOne)
+    setCompletedTask(initialCompleted)
+    //now remove the sent item from the remaining items 
+    const remainingUnDone=initialDone.filter((item)=>item.id !== id)
+setRemainingItems(remainingUnDone)
+
   }
   //handling the delete event
   const handleDelete=(id)=>{
@@ -149,7 +156,33 @@ if(inputData.length >= 5 && inputData!==" "){
       
       </List>
     </Grid>
+    {/*ADDING THE COMPLETED TASK SECTION*/ }
     <Grid item xs={12} sm={6} lg={6}>
+    
+    <List className={classes.secondColumn}>
+    <Typography variant="h5" className={classes.RemainingTaskTitle}>
+{" "}
+    YOUR COMPLETED TASK
+    </Typography>
+    {/*Mapping the useState DOM of remaining array*/}
+    {completedTasks.length>0 ? completedTasks.map((item,id)=> 
+      <ListItem key={id}>
+        <ListItemAvatar className={classes.ListItemAvatar1}>
+          <Avatar className={classes.ListItemAvatar} style={{color: "white"}}>
+           {item.title[0]}
+          </Avatar>
+        </ListItemAvatar>
+        <ListItemText primary={item.title}  />
+        <ListItemSecondaryAction>
+        
+         <IconButton onClick={()=>handleDelete(item.id)}>
+            < DeleteForeverOutlinedIcon style={{color: red[500]}}/>
+        </IconButton>
+        </ListItemSecondaryAction>
+      </ListItem> )
+    :<Typography className={classes.noTask}>No completed yet!</Typography>}
+      
+      </List>
     </Grid>
     </Grid>
     </Grid>

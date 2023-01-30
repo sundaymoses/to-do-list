@@ -99,7 +99,7 @@ setRemainingItems(remainingUnDone)
     <Grid item xs={12}>
     <Paper elevation={3}>
     <form onSubmit={handleSubmit} className={classes.formComponent}>
-    <Typography variant="h5" className={classes.heading}>What'chu planning?</Typography>
+    <Typography variant="h5" className={classes.heading}>What  is on your Plans?</Typography>
     <Grid container justifyContent='center'>
     <Grid item xs={8}>
        <TextField
